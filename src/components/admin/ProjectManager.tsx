@@ -26,6 +26,8 @@ import {
   GripVertical,
   Save,
 } from "lucide-react";
+import ImageUploader from "./ImageUploader";
+import SortableImageList, { DetailImage } from "./SortableImageList";
 import Link from "next/link";
 import {
   DndContext,
@@ -64,6 +66,9 @@ interface ProjectContent {
   product: string;
   keyword: string[];
   challenge: string;
+  thumbnail43: string;
+  thumbnail34: string;
+  detailImages: DetailImage[];
 }
 
 const defaultContent: ProjectContent = {
@@ -74,6 +79,9 @@ const defaultContent: ProjectContent = {
   product: "",
   keyword: [],
   challenge: "",
+  thumbnail43: "",
+  thumbnail34: "",
+  detailImages: [],
 };
 
 // 프로젝트 데이터 인터페이스 정의 (타입스크립트)
@@ -235,6 +243,14 @@ export default function ProjectManager() {
   const [editingId, setEditingId] = useState<number | null>(null);
   const [refreshTrigger, setRefreshTrigger] = useState(0);
   const [isDialogOpen, setIsDialogOpen] = useState(false);
+
+  // 스크롤 이동 함수
+  const scrollToSection = (id: string) => {
+    const element = document.getElementById(id);
+    if (element) {
+      element.scrollIntoView({ behavior: "smooth", block: "start" });
+    }
+  };
 
   // 드래그 앤 드롭 센서
   const sensors = useSensors(
@@ -573,6 +589,50 @@ export default function ProjectManager() {
                   disabled={loading}
                   placeholder="프로젝트 목록에 표시될 간단한 설명을 입력하세요"
                   className="bg-stone-950 border-stone-800 text-stone-200 resize-none"
+                />
+              </div>
+
+              {/* ===== 상세 컨텐츠 정보 (JSONB) ===== */}
+              <div className="space-y-4 pt-4 border-t border-stone-800">
+                <h4 className="text-lg font-medium text-stone-200">
+                  썸네일 이미지 (Thumbnails)
+                </h4>
+                <div className="grid grid-cols-1 md:grid-cols-2 gap-4">
+                  <div className="space-y-2">
+                    <ImageUploader
+                      label="가로형 썸네일 (4:3)"
+                      value={contentData.thumbnail43}
+                      onChange={(url) =>
+                        handleContentChange("thumbnail43", url)
+                      }
+                      bucketName="images"
+                      folderPath="projects/thumbnails/4x3"
+                      disabled={loading}
+                    />
+                  </div>
+                  <div className="space-y-2">
+                    <ImageUploader
+                      label="세로형 썸네일 (3:4)"
+                      value={contentData.thumbnail34}
+                      onChange={(url) =>
+                        handleContentChange("thumbnail34", url)
+                      }
+                      bucketName="images"
+                      folderPath="projects/thumbnails/3x4"
+                      disabled={loading}
+                    />
+                  </div>
+                </div>
+              </div>
+
+              {/* ===== 상세 이미지 관리 섹션 (순서 변경 가능) ===== */}
+              <div className="space-y-4 pt-4 border-t border-stone-800">
+                <SortableImageList
+                  images={contentData.detailImages || []}
+                  onImagesChange={(images) =>
+                    handleContentChange("detailImages", images)
+                  }
+                  folderPath="projects/details"
                 />
               </div>
 

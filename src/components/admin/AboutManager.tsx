@@ -5,6 +5,7 @@ import { supabase } from "@/lib/supabase";
 import { Button } from "@/components/ui/button";
 import Link from "next/link";
 import { ExternalLink, GripVertical, Plus, Trash2 } from "lucide-react";
+import ImageUploader from "./ImageUploader";
 import {
   Card,
   CardHeader,
@@ -322,16 +323,27 @@ export default function AboutManager() {
         </div>
       </CardHeader>
       <CardContent className="p-0 space-y-6">
-        {/* 이미지 URL */}
+        {/* 이미지 URL (ImageUploader로 대체) */}
         <div className="space-y-2">
-          <Label className="text-stone-300">메인 이미지 URL</Label>
-          <Input
+          <ImageUploader
+            label="메인 이미지 (About Page)"
             value={data.imageUrl}
-            onChange={(e) => handleChange("imageUrl", e.target.value)}
+            onChange={(url) => handleChange("imageUrl", url)}
+            folderPath="about" // about 폴더에 저장
             disabled={loading}
-            placeholder="/images/dummy/studio.jpg 또는 https://..."
-            className="bg-stone-950 border-stone-800 text-stone-200"
           />
+          <div className="flex gap-2 items-center">
+            <Label className="text-xs text-stone-500 shrink-0">
+              직접 입력:
+            </Label>
+            <Input
+              value={data.imageUrl}
+              onChange={(e) => handleChange("imageUrl", e.target.value)}
+              disabled={loading}
+              placeholder="또는 이미지 URL을 직접 입력하세요"
+              className="h-8 text-xs bg-stone-950 border-stone-800 text-stone-400"
+            />
+          </div>
         </div>
 
         {/* 메인 설명 */}
