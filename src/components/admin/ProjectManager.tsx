@@ -15,15 +15,7 @@ import {
   CardTitle,
 } from "@/components/ui/card";
 import {
-  Dialog,
-  DialogContent,
-  DialogDescription,
-  DialogHeader,
-  DialogTitle,
-  DialogTrigger,
-  DialogFooter,
-} from "@/components/ui/dialog";
-import {
+  ArrowLeft,
   Trash2,
   Edit,
   Loader2,
@@ -128,94 +120,99 @@ function SortableProjectItem({
       ref={setNodeRef}
       style={style}
       onClick={() => onEdit(project)}
-      className="flex items-center gap-4 p-4 bg-stone-900 border border-stone-800 rounded-lg group hover:border-stone-600 transition-colors cursor-pointer"
+      className="flex flex-col sm:flex-row sm:items-center gap-3 sm:gap-4 p-4 bg-stone-900 border border-stone-800 rounded-lg group hover:border-stone-600 transition-colors cursor-pointer"
     >
-      <button
-        {...attributes}
-        {...listeners}
-        onClick={(e) => e.stopPropagation()}
-        className="cursor-grab active:cursor-grabbing text-stone-500 hover:text-stone-300 p-1 rounded hover:bg-stone-800"
-      >
-        <GripVertical className="h-5 w-5" />
-      </button>
-      <div className="flex-1 flex flex-col justify-between min-w-0">
-        <div className="flex flex-row items-center gap-2 mb-1">
-          <h4 className="text-stone-200 font-medium truncate">
-            {project.title}
-          </h4>
-        </div>
-        <div className="flex items-center gap-2">
-          <span className="text-xs font-mono text-stone-500 bg-stone-800 px-1.5 py-0.5 rounded">
-            /{project.slug}
-          </span>
-          <span className="text-xs text-stone-600">
-            {project.updated_at
-              ? `${new Date(project.updated_at).toLocaleDateString(
-                  "ko-KR"
-                )} (수정됨)`
-              : new Date(project.created_at).toLocaleDateString("ko-KR")}
-          </span>
-        </div>
-      </div>
-      <div onClick={(e) => e.stopPropagation()}>
-        <Select
-          value={project.status}
-          onValueChange={(value) =>
-            onStatusChange(project.id, value as ProjectStatus)
-          }
-        >
-          <SelectTrigger
-            className={`h-6 text-[10px] uppercase tracking-wider px-2 w-[100px] border ${
-              statusColors[project.status] || statusColors.ready
-            }`}
-          >
-            <SelectValue />
-          </SelectTrigger>
-          <SelectContent className="bg-stone-900 border-stone-800 text-stone-200">
-            <SelectItem value="ready" className="text-xs">
-              Ready
-            </SelectItem>
-            <SelectItem value="published" className="text-xs">
-              Published
-            </SelectItem>
-            <SelectItem value="hidden" className="text-xs">
-              Hidden
-            </SelectItem>
-          </SelectContent>
-        </Select>
-      </div>
-      <div className="flex items-center gap-1">
-        <Link
-          href={`/project/${project.slug}`}
-          target="_blank"
+      <div className="flex items-start sm:items-center gap-3 w-full sm:w-auto flex-1">
+        <button
+          {...attributes}
+          {...listeners}
           onClick={(e) => e.stopPropagation()}
-          className="p-2 text-stone-500 hover:text-stone-200 hover:bg-stone-800 rounded-md"
-          title="새 탭에서 보기"
+          className="cursor-grab active:cursor-grabbing text-stone-500 hover:text-stone-300 p-1 rounded hover:bg-stone-800 shrink-0 mt-0.5 sm:mt-0"
         >
-          <ExternalLink className="h-4 w-4" />
-        </Link>
-        <Button
-          variant="ghost"
-          size="icon"
-          onClick={(e) => {
-            e.stopPropagation();
-            onEdit(project);
-          }}
-          className="text-stone-500 hover:text-stone-200 hover:bg-stone-800 h-9 w-9"
-        >
-          <Edit className="h-4 w-4" />
-        </Button>
-        <Button
-          variant="ghost"
-          size="icon"
-          onClick={(e) => {
-            e.stopPropagation();
-            onDelete(project.id);
-          }}
-          className="text-stone-500 hover:text-red-400 hover:bg-stone-800 h-9 w-9"
-        >
-          <Trash2 className="h-4 w-4" />
-        </Button>
+          <GripVertical className="h-5 w-5" />
+        </button>
+        <div className="flex-1 flex flex-col justify-between min-w-0">
+          <div className="flex flex-row items-center gap-2 mb-1">
+            <h4 className="text-stone-200 font-medium truncate">
+              {project.title}
+            </h4>
+          </div>
+          <div className="flex flex-wrap items-center gap-2">
+            <span className="text-xs font-mono text-stone-500 bg-stone-800 px-1.5 py-0.5 rounded">
+              /{project.slug}
+            </span>
+            <span className="text-xs text-stone-600">
+              {project.updated_at
+                ? `${new Date(project.updated_at).toLocaleDateString(
+                    "ko-KR"
+                  )} (수정됨)`
+                : new Date(project.created_at).toLocaleDateString("ko-KR")}
+            </span>
+          </div>
+        </div>
+      </div>
+
+      <div className="flex items-center justify-between sm:justify-end gap-3 w-full sm:w-auto pl-9 sm:pl-0">
+        <div onClick={(e) => e.stopPropagation()}>
+          <Select
+            value={project.status}
+            onValueChange={(value) =>
+              onStatusChange(project.id, value as ProjectStatus)
+            }
+          >
+            <SelectTrigger
+              className={`h-6 text-[10px] uppercase tracking-wider px-2 w-[90px] sm:w-[100px] border ${
+                statusColors[project.status] || statusColors.ready
+              }`}
+            >
+              <SelectValue />
+            </SelectTrigger>
+            <SelectContent className="bg-stone-900 border-stone-800 text-stone-200">
+              <SelectItem value="ready" className="text-xs">
+                Ready
+              </SelectItem>
+              <SelectItem value="published" className="text-xs">
+                Published
+              </SelectItem>
+              <SelectItem value="hidden" className="text-xs">
+                Hidden
+              </SelectItem>
+            </SelectContent>
+          </Select>
+        </div>
+        <div className="flex items-center gap-1">
+          <Link
+            href={`/project/${project.slug}`}
+            target="_blank"
+            onClick={(e) => e.stopPropagation()}
+            className="p-2 text-stone-500 hover:text-stone-200 hover:bg-stone-800 rounded-md"
+            title="새 탭에서 보기"
+          >
+            <ExternalLink className="h-4 w-4" />
+          </Link>
+          <Button
+            variant="ghost"
+            size="icon"
+            onClick={(e) => {
+              e.stopPropagation();
+              onEdit(project);
+            }}
+            className="text-stone-500 hover:text-stone-200 hover:bg-stone-800 h-9 w-9"
+          >
+            <Edit className="h-4 w-4" />
+          </Button>
+          <Button
+            variant="ghost"
+            size="icon"
+            onClick={(e) => {
+              e.stopPropagation();
+              onDelete(project.id);
+            }}
+            className="text-stone-500 hover:text-red-400 hover:bg-stone-800 h-9 w-9"
+          >
+            <Trash2 className="h-4 w-4" />
+          </Button>
+        </div>
       </div>
     </div>
   );
@@ -484,385 +481,401 @@ export default function ProjectManager() {
   };
 
   return (
-    <div className="space-y-6">
-      {/* ===== 상단 액션 바 ===== */}
-      <div className="flex items-center justify-between">
-        <div className="flex items-center gap-4">
-          <h3 className="text-xl font-semibold text-stone-200">
-            등록된 프로젝트 목록{" "}
-            <span className="text-stone-500 text-sm ml-2">
-              ({projects.length}개)
-            </span>
-          </h3>
-          {/* 뷰 모드 토글 버튼 */}
-          <div className="flex items-center bg-stone-900 rounded-md p-1 border border-stone-800">
-            <button
-              onClick={() => setViewMode("list")}
-              className={`p-1.5 rounded transition-colors ${
-                viewMode === "list"
-                  ? "bg-stone-800 text-stone-100 shadow-sm"
-                  : "text-stone-500 hover:text-stone-300"
-              }`}
-              title="리스트 뷰 (순서 변경 가능)"
-            >
-              <ListIcon className="h-4 w-4" />
-            </button>
-            <button
-              onClick={() => setViewMode("card")}
-              className={`p-1.5 rounded transition-colors ${
-                viewMode === "card"
-                  ? "bg-stone-800 text-stone-100 shadow-sm"
-                  : "text-stone-500 hover:text-stone-300"
-              }`}
-              title="카드 뷰"
-            >
-              <LayoutGrid className="h-4 w-4" />
-            </button>
-          </div>
-        </div>
-
-        <div className="flex gap-2 items-center">
-          {/* 순서 저장 버튼 (순서 변경 시에만 활성화) */}
-          {isOrderChanged && (
+    <div className="relative">
+      {/* ===== 입력/수정 폼 (List를 대체하여 표시) ===== */}
+      {isDialogOpen ? (
+        <div className="animate-in fade-in slide-in-from-right-4 duration-300">
+          <div className="flex items-center gap-4 mb-6">
             <Button
-              onClick={handleSaveOrder}
-              disabled={loading}
-              className="bg-blue-600 hover:bg-blue-700 text-white animate-in fade-in zoom-in duration-200"
+              variant="ghost"
+              size="icon"
+              onClick={handleCancel}
+              className="text-stone-400 hover:text-stone-100"
             >
-              <Save className="h-4 w-4 mr-2" /> 저장
+              <ArrowLeft className="h-5 w-5" />
             </Button>
-          )}
-
-          <Link href="/project" target="_blank">
-            <Button
-              variant="outline"
-              className="gap-2 bg-stone-800 text-stone-200 border-stone-700 hover:bg-stone-200 hover:text-stone-900 hover:border-stone-600"
-            >
-              전체 보기 <ExternalLink className="h-4 w-4" />
-            </Button>
-          </Link>
-          <Button
-            variant="outline"
-            onClick={handleCreateNew}
-            className="gap-2 bg-stone-800 text-stone-200 border-stone-700 hover:bg-stone-200 hover:text-stone-900 hover:border-stone-600"
-          >
-            <Plus className="h-4 w-4" /> 새 프로젝트
-          </Button>
-        </div>
-      </div>
-
-      {/* ===== 다이얼로그 (입력/수정 폼) ===== */}
-      <Dialog open={isDialogOpen} onOpenChange={setIsDialogOpen}>
-        <DialogContent className="bg-stone-900 border-stone-800 text-stone-200 max-w-2xl">
-          <DialogHeader>
-            <DialogTitle className="text-xl text-stone-100">
-              {isEditing ? "프로젝트 수정" : "새 프로젝트 등록"}
-            </DialogTitle>
-            <DialogDescription className="text-stone-400">
-              {isEditing
-                ? "기존 프로젝트 내용을 수정합니다."
-                : "새로운 프로젝트를 추가합니다."}
-            </DialogDescription>
-          </DialogHeader>
-
-          <div className="space-y-6 py-4">
-            <div className="grid grid-cols-2 gap-4">
-              <div className="space-y-2">
-                <Label htmlFor="title" className="text-stone-300">
-                  제목
-                </Label>
-                <Input
-                  id="title"
-                  value={title}
-                  onChange={(e) => setTitle(e.target.value)}
-                  disabled={loading}
-                  placeholder="프로젝트 제목"
-                  className="bg-stone-950 border-stone-800 text-stone-200"
-                />
-              </div>
-
-              {/* 🚨 상태 선택 필드 */}
-              <div className="space-y-2">
-                <Label className="text-stone-300">상태 (Status)</Label>
-                <Select
-                  value={status}
-                  onValueChange={(value) => setStatus(value as ProjectStatus)}
-                  disabled={loading}
-                >
-                  <SelectTrigger className="bg-stone-950 border-stone-800 text-stone-200">
-                    <SelectValue placeholder="상태 선택" />
-                  </SelectTrigger>
-                  <SelectContent className="bg-stone-900 border-stone-800 text-stone-200">
-                    <SelectItem value="ready">Ready (준비 중)</SelectItem>
-                    <SelectItem value="published">Published (공개)</SelectItem>
-                    <SelectItem value="hidden">Hidden (숨김)</SelectItem>
-                  </SelectContent>
-                </Select>
-              </div>
-            </div>
-
-            {/* 🚨 Slug 입력 필드 */}
-            <div className="space-y-2">
-              <Label htmlFor="slug" className="text-stone-300">
-                프로젝트 슬러그 (URL 경로)
-              </Label>
-              <Input
-                id="slug"
-                value={slug}
-                onChange={(e) => setSlug(e.target.value)}
-                disabled={loading}
-                placeholder="예: my-first-project"
-                className="bg-stone-950 border-stone-800 text-stone-200"
-              />
-              <p className="text-xs text-stone-500">
-                URL에 사용됩니다. 영문, 숫자, 하이픈(-)만 사용하세요.
+            <div>
+              <h3 className="text-xl font-semibold text-stone-100">
+                {isEditing ? "프로젝트 수정" : "새 프로젝트 등록"}
+              </h3>
+              <p className="text-sm text-stone-400">
+                {isEditing
+                  ? "기존 프로젝트 내용을 수정합니다."
+                  : "새로운 프로젝트를 추가합니다."}
               </p>
             </div>
+          </div>
 
-            {/* 🚨 내용 입력 필드 */}
-            <div className="space-y-2">
-              <Label htmlFor="description" className="text-stone-300">
-                간단 설명 (Summary)
-              </Label>
-              <Textarea
-                id="description"
-                rows={3}
-                value={description}
-                onChange={(e) => setDescription(e.target.value)}
+          <Card className="bg-stone-900 border-stone-800">
+            <CardContent className="p-6 space-y-6">
+              <div className="grid grid-cols-1 md:grid-cols-2 gap-6">
+                <div className="space-y-2">
+                  <Label htmlFor="title" className="text-stone-300">
+                    제목
+                  </Label>
+                  <Input
+                    id="title"
+                    value={title}
+                    onChange={(e) => setTitle(e.target.value)}
+                    disabled={loading}
+                    placeholder="프로젝트 제목"
+                    className="bg-stone-950 border-stone-800 text-stone-200"
+                  />
+                </div>
+
+                <div className="space-y-2">
+                  <Label className="text-stone-300">상태 (Status)</Label>
+                  <Select
+                    value={status}
+                    onValueChange={(value) => setStatus(value as ProjectStatus)}
+                    disabled={loading}
+                  >
+                    <SelectTrigger className="bg-stone-950 border-stone-800 text-stone-200">
+                      <SelectValue placeholder="상태 선택" />
+                    </SelectTrigger>
+                    <SelectContent className="bg-stone-900 border-stone-800 text-stone-200">
+                      <SelectItem value="ready">Ready (준비 중)</SelectItem>
+                      <SelectItem value="published">
+                        Published (공개)
+                      </SelectItem>
+                      <SelectItem value="hidden">Hidden (숨김)</SelectItem>
+                    </SelectContent>
+                  </Select>
+                </div>
+              </div>
+
+              <div className="space-y-2">
+                <Label htmlFor="slug" className="text-stone-300">
+                  프로젝트 슬러그 (URL 경로)
+                </Label>
+                <Input
+                  id="slug"
+                  value={slug}
+                  onChange={(e) => setSlug(e.target.value)}
+                  disabled={loading}
+                  placeholder="예: my-first-project"
+                  className="bg-stone-950 border-stone-800 text-stone-200"
+                />
+                <p className="text-xs text-stone-500">
+                  URL에 사용됩니다. 영문, 숫자, 하이픈(-)만 사용하세요.
+                </p>
+              </div>
+
+              <div className="space-y-2">
+                <Label htmlFor="description" className="text-stone-300">
+                  간단 설명 (Summary)
+                </Label>
+                <Textarea
+                  id="description"
+                  rows={3}
+                  value={description}
+                  onChange={(e) => setDescription(e.target.value)}
+                  disabled={loading}
+                  placeholder="프로젝트 목록에 표시될 간단한 설명을 입력하세요"
+                  className="bg-stone-950 border-stone-800 text-stone-200 resize-none"
+                />
+              </div>
+
+              {/* ===== 상세 컨텐츠 정보 (JSONB) ===== */}
+              <div className="space-y-4 pt-4 border-t border-stone-800">
+                <h4 className="text-lg font-medium text-stone-200">
+                  상세 정보 (Contents)
+                </h4>
+
+                <div className="grid grid-cols-1 md:grid-cols-2 gap-4">
+                  <div className="space-y-2">
+                    <Label className="text-stone-300">Project Name</Label>
+                    <Input
+                      value={contentData.project}
+                      onChange={(e) =>
+                        handleContentChange("project", e.target.value)
+                      }
+                      className="bg-stone-950 border-stone-800 text-stone-200"
+                      placeholder="프로젝트 명칭"
+                    />
+                  </div>
+                  <div className="space-y-2">
+                    <Label className="text-stone-300">Year</Label>
+                    <Input
+                      type="number"
+                      value={contentData.year}
+                      onChange={(e) =>
+                        handleContentChange("year", parseInt(e.target.value))
+                      }
+                      className="bg-stone-950 border-stone-800 text-stone-200"
+                    />
+                  </div>
+                </div>
+
+                <div className="grid grid-cols-1 md:grid-cols-2 gap-4">
+                  <div className="space-y-2">
+                    <Label className="text-stone-300">Client</Label>
+                    <Input
+                      value={contentData.client}
+                      onChange={(e) =>
+                        handleContentChange("client", e.target.value)
+                      }
+                      className="bg-stone-950 border-stone-800 text-stone-200"
+                    />
+                  </div>
+                  <div className="space-y-2">
+                    <Label className="text-stone-300">Services</Label>
+                    <Input
+                      value={contentData.services}
+                      onChange={(e) =>
+                        handleContentChange("services", e.target.value)
+                      }
+                      className="bg-stone-950 border-stone-800 text-stone-200"
+                    />
+                  </div>
+                </div>
+
+                <div className="space-y-2">
+                  <Label className="text-stone-300">Product</Label>
+                  <Input
+                    value={contentData.product}
+                    onChange={(e) =>
+                      handleContentChange("product", e.target.value)
+                    }
+                    className="bg-stone-950 border-stone-800 text-stone-200"
+                  />
+                </div>
+
+                <div className="space-y-2">
+                  <Label className="text-stone-300">
+                    Keywords (쉼표로 구분)
+                  </Label>
+                  <Input
+                    value={contentData.keyword.join(", ")}
+                    onChange={(e) =>
+                      handleContentChange(
+                        "keyword",
+                        e.target.value.split(",").map((k) => k.trim())
+                      )
+                    }
+                    className="bg-stone-950 border-stone-800 text-stone-200"
+                    placeholder="예: Branding, UI/UX, Web Design"
+                  />
+                </div>
+
+                <div className="space-y-2">
+                  <Label className="text-stone-300">
+                    Challenge (Long Text)
+                  </Label>
+                  <Textarea
+                    rows={6}
+                    value={contentData.challenge}
+                    onChange={(e) =>
+                      handleContentChange("challenge", e.target.value)
+                    }
+                    className="bg-stone-950 border-stone-800 text-stone-200"
+                    placeholder="프로젝트의 도전 과제 및 상세 설명을 입력하세요"
+                  />
+                </div>
+              </div>
+            </CardContent>
+            <CardFooter className="flex justify-end gap-3 p-6 border-t border-stone-800">
+              <Button
+                variant="outline"
+                onClick={handleCancel}
+                className="border-stone-700 text-stone-400 hover:text-stone-200 hover:bg-stone-800 hover:border-stone-600"
+              >
+                취소
+              </Button>
+              <Button
+                onClick={handleSave}
                 disabled={loading}
-                placeholder="프로젝트 목록에 표시될 간단한 설명을 입력하세요"
-                className="bg-stone-950 border-stone-800 text-stone-200 resize-none"
-              />
+                className="bg-stone-100 text-stone-900 hover:bg-stone-200"
+              >
+                {loading ? "저장 중..." : isEditing ? "수정하기" : "등록하기"}
+              </Button>
+            </CardFooter>
+          </Card>
+        </div>
+      ) : (
+        <div className="space-y-6 animate-in fade-in slide-in-from-left-4 duration-300">
+          {/* ===== 상단 액션 바 ===== */}
+          <div className="flex flex-col md:flex-row items-start md:items-center justify-between gap-4">
+            <div className="flex items-center gap-4 w-full md:w-auto justify-between md:justify-start">
+              <h3 className="text-xl font-semibold text-stone-200">
+                등록된 프로젝트 목록{" "}
+                <span className="text-stone-500 text-sm ml-2">
+                  ({projects.length}개)
+                </span>
+              </h3>
+              {/* 뷰 모드 토글 버튼 */}
+              <div className="flex items-center bg-stone-900 rounded-md p-1 border border-stone-800">
+                <button
+                  onClick={() => setViewMode("list")}
+                  className={`p-1.5 rounded transition-colors ${
+                    viewMode === "list"
+                      ? "bg-stone-800 text-stone-100 shadow-sm"
+                      : "text-stone-500 hover:text-stone-300"
+                  }`}
+                  title="리스트 뷰 (순서 변경 가능)"
+                >
+                  <ListIcon className="h-4 w-4" />
+                </button>
+                <button
+                  onClick={() => setViewMode("card")}
+                  className={`p-1.5 rounded transition-colors ${
+                    viewMode === "card"
+                      ? "bg-stone-800 text-stone-100 shadow-sm"
+                      : "text-stone-500 hover:text-stone-300"
+                  }`}
+                  title="카드 뷰"
+                >
+                  <LayoutGrid className="h-4 w-4" />
+                </button>
+              </div>
             </div>
 
-            {/* ===== 상세 컨텐츠 정보 (JSONB) ===== */}
-            <div className="space-y-4 pt-4 border-t border-stone-800">
-              <h4 className="text-lg font-medium text-stone-200">
-                상세 정보 (Contents)
-              </h4>
+            <div className="flex gap-2 items-center w-full md:w-auto overflow-x-auto pb-1 md:pb-0">
+              {/* 순서 저장 버튼 (순서 변경 시에만 활성화) */}
+              {isOrderChanged && (
+                <Button
+                  onClick={handleSaveOrder}
+                  disabled={loading}
+                  className="bg-blue-600 hover:bg-blue-700 text-white animate-in fade-in zoom-in duration-200 shrink-0"
+                >
+                  <Save className="h-4 w-4 mr-2" /> 저장
+                </Button>
+              )}
 
-              <div className="grid grid-cols-2 gap-4">
-                <div className="space-y-2">
-                  <Label className="text-stone-300">Project Name</Label>
-                  <Input
-                    value={contentData.project}
-                    onChange={(e) =>
-                      handleContentChange("project", e.target.value)
-                    }
-                    className="bg-stone-950 border-stone-800 text-stone-200"
-                    placeholder="프로젝트 명칭"
-                  />
-                </div>
-                <div className="space-y-2">
-                  <Label className="text-stone-300">Year</Label>
-                  <Input
-                    type="number"
-                    value={contentData.year}
-                    onChange={(e) =>
-                      handleContentChange("year", parseInt(e.target.value))
-                    }
-                    className="bg-stone-950 border-stone-800 text-stone-200"
-                  />
-                </div>
-              </div>
-
-              <div className="grid grid-cols-2 gap-4">
-                <div className="space-y-2">
-                  <Label className="text-stone-300">Client</Label>
-                  <Input
-                    value={contentData.client}
-                    onChange={(e) =>
-                      handleContentChange("client", e.target.value)
-                    }
-                    className="bg-stone-950 border-stone-800 text-stone-200"
-                  />
-                </div>
-                <div className="space-y-2">
-                  <Label className="text-stone-300">Services</Label>
-                  <Input
-                    value={contentData.services}
-                    onChange={(e) =>
-                      handleContentChange("services", e.target.value)
-                    }
-                    className="bg-stone-950 border-stone-800 text-stone-200"
-                  />
-                </div>
-              </div>
-
-              <div className="space-y-2">
-                <Label className="text-stone-300">Product</Label>
-                <Input
-                  value={contentData.product}
-                  onChange={(e) =>
-                    handleContentChange("product", e.target.value)
-                  }
-                  className="bg-stone-950 border-stone-800 text-stone-200"
-                />
-              </div>
-
-              <div className="space-y-2">
-                <Label className="text-stone-300">Keywords (쉼표로 구분)</Label>
-                <Input
-                  value={contentData.keyword.join(", ")}
-                  onChange={(e) =>
-                    handleContentChange(
-                      "keyword",
-                      e.target.value.split(",").map((k) => k.trim())
-                    )
-                  }
-                  className="bg-stone-950 border-stone-800 text-stone-200"
-                  placeholder="예: Branding, UI/UX, Web Design"
-                />
-              </div>
-
-              <div className="space-y-2">
-                <Label className="text-stone-300">Challenge (Long Text)</Label>
-                <Textarea
-                  rows={6}
-                  value={contentData.challenge}
-                  onChange={(e) =>
-                    handleContentChange("challenge", e.target.value)
-                  }
-                  className="bg-stone-950 border-stone-800 text-stone-200"
-                  placeholder="프로젝트의 도전 과제 및 상세 설명을 입력하세요"
-                />
-              </div>
+              <Link href="/project" target="_blank" className="shrink-0">
+                <Button
+                  variant="outline"
+                  className="gap-2 bg-stone-800 text-stone-200 border-stone-700 hover:bg-stone-200 hover:text-stone-900 hover:border-stone-600"
+                >
+                  전체 보기 <ExternalLink className="h-4 w-4" />
+                </Button>
+              </Link>
+              <Button
+                variant="outline"
+                onClick={handleCreateNew}
+                className="gap-2 bg-stone-800 text-stone-200 border-stone-700 hover:bg-stone-200 hover:text-stone-900 hover:border-stone-600 shrink-0"
+              >
+                <Plus className="h-4 w-4" /> 새 프로젝트
+              </Button>
             </div>
           </div>
 
-          <DialogFooter>
-            <Button
-              variant="outline"
-              onClick={handleCancel}
-              className="border-stone-700 text-stone-400 hover:text-stone-200 hover:bg-stone-800 hover:border-stone-600"
-            >
-              취소
-            </Button>
-            <Button
-              onClick={handleSave}
-              disabled={loading}
-              className="bg-stone-100 text-stone-900 hover:bg-stone-200"
-            >
-              {loading ? "저장 중..." : isEditing ? "수정하기" : "등록하기"}
-            </Button>
-          </DialogFooter>
-        </DialogContent>
-      </Dialog>
+          {/* ===== 프로젝트 목록 (Read) ===== */}
+          {loading && !projects.length ? (
+            <div className="text-center p-12 text-stone-500 border border-dashed border-stone-800 rounded-lg">
+              <Loader2 className="h-6 w-6 animate-spin mx-auto mb-2 opacity-50" />
+              프로젝트를 불러오는 중입니다...
+            </div>
+          ) : projects.length === 0 ? (
+            <div className="text-center p-12 text-stone-500 border border-dashed border-stone-800 rounded-lg bg-stone-900/50">
+              등록된 프로젝트가 없습니다. 새 프로젝트 버튼을 눌러 추가해보세요.
+            </div>
+          ) : viewMode === "list" ? (
+            /* === 리스트 뷰 (순서 변경 가능) === */
+            <div className="space-y-2">
+              <DndContext
+                sensors={sensors}
+                collisionDetection={closestCenter}
+                onDragEnd={handleDragEnd}
+              >
+                <SortableContext
+                  items={projects.map((p) => p.id)}
+                  strategy={verticalListSortingStrategy}
+                >
+                  {projects.map((project) => (
+                    <SortableProjectItem
+                      key={project.id}
+                      project={project}
+                      onEdit={handleEdit}
+                      onDelete={handleDelete}
+                      onStatusChange={handleStatusChange}
+                    />
+                  ))}
+                </SortableContext>
+              </DndContext>
+            </div>
+          ) : (
+            /* === 카드 뷰 (기존 그리드) === */
+            <div className="grid grid-cols-1 md:grid-cols-2 lg:grid-cols-3 gap-4">
+              {projects.map((item) => (
+                <Card
+                  key={item.id}
+                  onClick={() => handleEdit(item)}
+                  className={`p-5 transition-all bg-stone-900 border-stone-800 shadow-sm hover:shadow-md hover:border-stone-600 flex flex-col h-full cursor-pointer`}
+                >
+                  <div className="flex-1 mb-4">
+                    <div className="flex items-center justify-between mb-2">
+                      <CardTitle className="text-lg truncate text-stone-200">
+                        {item.title}
+                      </CardTitle>
+                      <span
+                        className={`text-[10px] uppercase tracking-wider px-1.5 py-0.5 rounded border ${
+                          statusColors[item.status] || statusColors.ready
+                        }`}
+                      >
+                        {item.status}
+                      </span>
+                    </div>
 
-      {/* ===== 프로젝트 목록 (Read) ===== */}
-      {loading && !projects.length ? (
-        <div className="text-center p-12 text-stone-500 border border-dashed border-stone-800 rounded-lg">
-          <Loader2 className="h-6 w-6 animate-spin mx-auto mb-2 opacity-50" />
-          프로젝트를 불러오는 중입니다...
-        </div>
-      ) : projects.length === 0 ? (
-        <div className="text-center p-12 text-stone-500 border border-dashed border-stone-800 rounded-lg bg-stone-900/50">
-          등록된 프로젝트가 없습니다. 새 프로젝트 버튼을 눌러 추가해보세요.
-        </div>
-      ) : viewMode === "list" ? (
-        /* === 리스트 뷰 (순서 변경 가능) === */
-        <div className="space-y-2">
-          <DndContext
-            sensors={sensors}
-            collisionDetection={closestCenter}
-            onDragEnd={handleDragEnd}
-          >
-            <SortableContext
-              items={projects.map((p) => p.id)}
-              strategy={verticalListSortingStrategy}
-            >
-              {projects.map((project) => (
-                <SortableProjectItem
-                  key={project.id}
-                  project={project}
-                  onEdit={handleEdit}
-                  onDelete={handleDelete}
-                  onStatusChange={handleStatusChange}
-                />
+                    <div className="flex items-center gap-2 mb-3">
+                      <span className="px-2 py-0.5 rounded bg-stone-800 text-stone-400 text-xs font-mono border border-stone-700">
+                        /{item.slug}
+                      </span>
+                      <Link
+                        href={`/project/${item.slug}`}
+                        target="_blank"
+                        onClick={(e) => e.stopPropagation()}
+                        className="text-stone-600 hover:text-stone-300 transition-colors"
+                        title="새 탭에서 보기"
+                      >
+                        <ExternalLink className="h-3 w-3" />
+                      </Link>
+                    </div>
+                    <CardDescription className="line-clamp-3 text-stone-400">
+                      {item.description}
+                    </CardDescription>
+                  </div>
+
+                  <div className="flex items-center justify-between pt-4 border-t border-stone-800">
+                    <span className="text-xs text-stone-600">
+                      {item.updated_at
+                        ? `${new Date(item.updated_at).toLocaleDateString(
+                            "ko-KR"
+                          )} (수정됨)`
+                        : new Date(item.created_at).toLocaleDateString("ko-KR")}
+                    </span>
+                    <div className="flex items-center gap-1">
+                      <Button
+                        variant="ghost"
+                        size="icon"
+                        onClick={(e) => {
+                          e.stopPropagation();
+                          handleEdit(item);
+                        }}
+                        title="수정"
+                        className="h-8 w-8 text-stone-500 hover:text-stone-200 hover:bg-stone-800"
+                      >
+                        <Edit className="h-4 w-4" />
+                      </Button>
+                      <Button
+                        variant="ghost"
+                        size="icon"
+                        onClick={(e) => {
+                          e.stopPropagation();
+                          handleDelete(item.id);
+                        }}
+                        disabled={loading}
+                        title="삭제"
+                        className="h-8 w-8 text-stone-500 hover:text-red-400 hover:bg-stone-800"
+                      >
+                        <Trash2 className="h-4 w-4" />
+                      </Button>
+                    </div>
+                  </div>
+                </Card>
               ))}
-            </SortableContext>
-          </DndContext>
-        </div>
-      ) : (
-        /* === 카드 뷰 (기존 그리드) === */
-        <div className="grid grid-cols-1 md:grid-cols-2 lg:grid-cols-3 gap-4">
-          {projects.map((item) => (
-            <Card
-              key={item.id}
-              onClick={() => handleEdit(item)}
-              className={`p-5 transition-all bg-stone-900 border-stone-800 shadow-sm hover:shadow-md hover:border-stone-600 flex flex-col h-full cursor-pointer`}
-            >
-              <div className="flex-1 mb-4">
-                <div className="flex items-center justify-between mb-2">
-                  <CardTitle className="text-lg truncate text-stone-200">
-                    {item.title}
-                  </CardTitle>
-                  <span
-                    className={`text-[10px] uppercase tracking-wider px-1.5 py-0.5 rounded border ${
-                      statusColors[item.status] || statusColors.ready
-                    }`}
-                  >
-                    {item.status}
-                  </span>
-                </div>
-
-                <div className="flex items-center gap-2 mb-3">
-                  <span className="px-2 py-0.5 rounded bg-stone-800 text-stone-400 text-xs font-mono border border-stone-700">
-                    /{item.slug}
-                  </span>
-                  <Link
-                    href={`/project/${item.slug}`}
-                    target="_blank"
-                    onClick={(e) => e.stopPropagation()}
-                    className="text-stone-600 hover:text-stone-300 transition-colors"
-                    title="새 탭에서 보기"
-                  >
-                    <ExternalLink className="h-3 w-3" />
-                  </Link>
-                </div>
-                <CardDescription className="line-clamp-3 text-stone-400">
-                  {item.description}
-                </CardDescription>
-              </div>
-
-              <div className="flex items-center justify-between pt-4 border-t border-stone-800">
-                <span className="text-xs text-stone-600">
-                  {item.updated_at
-                    ? `${new Date(item.updated_at).toLocaleDateString(
-                        "ko-KR"
-                      )} (수정됨)`
-                    : new Date(item.created_at).toLocaleDateString("ko-KR")}
-                </span>
-                <div className="flex items-center gap-1">
-                  <Button
-                    variant="ghost"
-                    size="icon"
-                    onClick={(e) => {
-                      e.stopPropagation();
-                      handleEdit(item);
-                    }}
-                    title="수정"
-                    className="h-8 w-8 text-stone-500 hover:text-stone-200 hover:bg-stone-800"
-                  >
-                    <Edit className="h-4 w-4" />
-                  </Button>
-                  <Button
-                    variant="ghost"
-                    size="icon"
-                    onClick={(e) => {
-                      e.stopPropagation();
-                      handleDelete(item.id);
-                    }}
-                    disabled={loading}
-                    title="삭제"
-                    className="h-8 w-8 text-stone-500 hover:text-red-400 hover:bg-stone-800"
-                  >
-                    <Trash2 className="h-4 w-4" />
-                  </Button>
-                </div>
-              </div>
-            </Card>
-          ))}
+            </div>
+          )}
         </div>
       )}
     </div>

@@ -301,9 +301,9 @@ export default function AboutManager() {
   };
 
   return (
-    <Card className="p-6 mb-8 bg-stone-900 border-stone-800 shadow-lg">
+    <Card className="p-4 md:p-6 mb-8 bg-stone-900 border-stone-800 shadow-lg">
       <CardHeader className="p-0 mb-6">
-        <div className="flex justify-between items-start">
+        <div className="flex flex-col sm:flex-row justify-between items-start sm:items-center gap-2">
           <div>
             <CardTitle className="text-xl text-stone-100">
               About 페이지 편집
@@ -315,7 +315,7 @@ export default function AboutManager() {
           <Link
             href="/about"
             target="_blank"
-            className="flex items-center gap-1 text-xs text-stone-500 hover:text-stone-300 transition-colors"
+            className="flex items-center gap-1 text-xs text-stone-500 hover:text-stone-300 transition-colors bg-stone-800 px-3 py-1.5 rounded-full"
           >
             페이지 보기 <ExternalLink className="h-3 w-3" />
           </Link>
@@ -348,7 +348,7 @@ export default function AboutManager() {
         </div>
 
         {/* 리스트 편집 영역 (3열) */}
-        <div className="grid md:grid-cols-3 gap-6 pt-4 border-t border-stone-800">
+        <div className="grid grid-cols-1 md:grid-cols-3 gap-6 pt-4 border-t border-stone-800">
           <SortableSection
             title="Experience"
             items={data.experience}
@@ -367,7 +367,7 @@ export default function AboutManager() {
         </div>
 
         {/* 일반 텍스트 영역 (Address, Contact, Social) */}
-        <div className="grid md:grid-cols-3 gap-6 pt-4 border-t border-stone-800">
+        <div className="grid grid-cols-1 md:grid-cols-3 gap-6 pt-4 border-t border-stone-800">
           <div className="space-y-2">
             <Label className="text-stone-300">Address</Label>
             <Textarea
